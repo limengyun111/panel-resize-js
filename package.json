@@ -2,7 +2,7 @@
   "name": "panel-resize-js",
   "version": "0.1.0",
   "main": "src/panel-resize.js",
-  "files": [                 
+  "files": [
     "src/",
     "README.md",
     "LICENSE"
@@ -40,5 +40,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "一个轻量级的面板拖拽调整大小库，支持水平和垂直方向的拖拽调整。",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limengyun111/panel-resize-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/limengyun111/panel-resize-js/issues"
+  },
+  "homepage": "https://github.com/limengyun111/panel-resize-js#readme"
 }
