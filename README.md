@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# Panel Resize JS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个轻量级的面板拖拽调整大小库，支持水平和垂直方向的拖拽调整。
 
-## Available Scripts
+## 安装
 
-In the project directory, you can run:
+### 使用 npm 安装：
 
-### `npm start`
+### npm install panel-resize-js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 使用说明
+### 基本用法
+首先，确保你的 HTML 结构符合要求：
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 父元素需要有 wrapper 类名
+- 子面板元素需要以 panel 为类名前缀
+- 拖拽条需要以 handle 为类名前缀
+### 初始化
+```js
+import PanelResize from 'panel-resize-js';
 
-### `npm test`
+new PanelResize(
+  document.getElementById('wrapper-element'), // 必填：拖拽容器元素
+  [ // 面板尺寸配置（可选）
+    { minSize: 10, defaultSize: 30, maxSize: 50 }, // minSize最小尺寸比例 defaultSize 默认尺寸比例 maxSize 最大尺寸比例
+    { minSize: 20, defaultSize: 30 },
+    { minSize: 20 }
+  ],
+  'horizontal' // 拖拽方向（可选，默认'horizontal'）
+);
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### PanelResize 参数说明
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| 参数名       | 类型            | 必填 | 默认值     | 说明                                                                 |
+|--------------|-----------------|------|------------|----------------------------------------------------------------------|
+| `container`  | `HTMLElement`   | 是   | -          | 包含面板和拖拽条的容器元素，必须是一个有效的DOM元素                 |
+| `sizeConfig` | `Array<{minSize?: number,defaultSize?: number,maxSize?: number}>` | 否   | `[]`       | 面板尺寸配置数组，每个元素为包含尺寸配置的对象                |
+| `direction`  | `String`        | 否   | `'horizontal'` | 拖拽方向，可选值：`'horizontal'`（水平）或 `'vertical'`（垂直） |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 完整示例
+```jsx
+import { useEffect } from 'react';
+import PanelResize from 'panel-resize-js';
 
-### `npm run eject`
+function App() {
+  useEffect(() => {
+    new PanelResize(
+      document.getElementById('wrapper-resize'),
+      [
+        { minSize: 10, defaultSize: 30 },
+        { minSize: 20, defaultSize: 30 },
+        { minSize: 20, defaultSize: 40 }
+      ],
+      'vertical'
+    );
+  }, []);
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  return (
+    <div className="wrapper" id="wrapper-resize">
+      <div className="panel-one">panel-one</div>
+      <div className="handle-one"></div>
+      <div className="panel-two">panel-two</div>
+      <div className="handle-two"></div>
+      <div className="panel-three">panel-three</div>
+    </div>
+  );
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default App;
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

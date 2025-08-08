@@ -1,7 +1,12 @@
 {
-  "name": "panel-resize",
+  "name": "panel-resize-js",
   "version": "0.1.0",
-  "private": true,
+  "main": "src/panel-resize.js",
+  "files": [                 
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",

@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import PanelResize from './panel-resize';
 
 function App() {
+
+  useEffect(() => {
+    new PanelResize(document.getElementById('wrapper-resize'),
+      [{ minSize: 10, defaultSize: 30 }, { minSize: 20, defaultSize: 30 }, { minSize: 20, defaultSize: 40 }]);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper" id="wrapper-resize">
+      <div className="panel-one">panel-one</div>
+      <div className="handle-one"></div>
+      <div className="panel-two">panel-two</div>
+      <div className="handle-two"></div>
+      <div className="panel-three">panel-three</div>
     </div>
+
   );
 }
 
