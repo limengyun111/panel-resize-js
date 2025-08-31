@@ -4,10 +4,9 @@ import PanelResize from './panel-resize';
 function App() {
 
   useEffect(() => {
-    const PanelResize1= new PanelResize(document.getElementById('wrapper-resize'),
+    new PanelResize(document.getElementById('wrapper-resize'),
       { sizeData: [{ minSize: 20, defaultSize: 20 }, { minSize: 20, defaultSize: '30px' }, { minSize: 20, defaultSize: 40 }] }
     );
-    PanelResize1.setLayout([{ minSize: 20, defaultSize: '300px' }, { minSize: 20, defaultSize: 30 }, { minSize: 20, defaultSize: 40 }]);
   }, []);
 
   return (

@@ -8,9 +8,9 @@ class DragElement {
       return [...DragElement.paramEleHistory].find(item => item === dragEle);
     }
     DragElement.paramEleHistory.add(dragEle);
-    
+
     const {
-     customDragMove, direction = 'horizontal', customCursor
+      customDragMove, direction = 'horizontal', customCursor
     } = options;
 
     this.dragEle = dragEle;
@@ -214,7 +214,7 @@ export default class PanelResize {
   static cache = new Map();
 
   constructor(parentEle, options = {}) {
-  
+
     const existingInstance = PanelResize.cache.get(parentEle);
     if (existingInstance) {
       return existingInstance;
@@ -291,7 +291,7 @@ export default class PanelResize {
 
 
     this.handlesEle.forEach(handle => {
-      const handler = new DragElement(handle, { customDragMove: this.handleMove, direction: this.direction, customCursor: this.customCursor});
+      const handler = new DragElement(handle, { customDragMove: this.handleMove, direction: this.direction, customCursor: this.customCursor });
       handler.onMoveDown = (x, y) => {
         this.curHandler = handler;
         this.handlerBeginPos = {
@@ -334,7 +334,7 @@ export default class PanelResize {
   }
 
   setPanelFlex = () => {
-   this.normalized = this.panelsEle.map(p => this.normalizePanel(p));
+    this.normalized = this.panelsEle.map(p => this.normalizePanel(p));
     this.fixedPanels = this.normalized.filter(p => p.type === 'fixed');
     this.flexPanels = this.normalized.filter(p => p.type === 'flex');
     this.fixedRatio = this.fixedPanels.reduce((sum, p) => sum + this.parsePixelValue(p.computedSize), 0);
@@ -347,17 +347,18 @@ export default class PanelResize {
 
     this.flexPanels.map((ele, index) => {
       const { panel } = ele;
-      panel.style.width = '';
+      this.isHorizontal ?  panel.style.width = '':  panel.style.height = '';
       panel.style.flex = ''
       panel.style.flexGrow = panelsFlexRatio[index] / flexTotalRatio * this.remainingSpace;
       panel.style.flexBasis = 0;
       return ele;
     })
 
-      this.fixedPanels.map((ele, index) => {
+    this.fixedPanels.map((ele, index) => {
       const { panel } = ele;
-      panel.style.flex = ''
-      panel.style.width = panelsFixed[index] + 'px';
+      panel.style.flex = '';
+      this.isHorizontal ? panel.style.width = panelsFixed[index] + 'px' : panel.style.height = panelsFixed[index] + 'px';;
+
       return ele;
     });
     this.panelsFlex = this.normalized.map(ele => {
@@ -380,7 +381,7 @@ export default class PanelResize {
       const nextGrow = curGrow / this.remainingSpace * newTotalFlex;
       const { panel } = ele;
       if (ele.type === 'fixed') {
-        panel.style.width = ele.computedSize + 'px';
+        this.isHorizontal ? panel.style.width = ele.computedSize + 'px' : panel.style.height = ele.computedSize + 'px';
         this.panelsFlex[index] = ele.computedSize;
         this.startPanelsFlex[index] = ele.computedSize;
       } else {
@@ -519,7 +520,7 @@ export default class PanelResize {
         }
       }
     }
- 
+
     return { panelsFixed, panelsFlexRatio: result }
   };
 
@@ -629,7 +630,7 @@ export default class PanelResize {
           adjustAmount = Math.max(remainingOffset, minFlex - curFlex);
         }
         if (normalizedPanel.type === 'fixed') {
-          panel.style.width = curFlex + adjustAmount;
+         this.isHorizontal ? panel.style.width = curFlex + adjustAmount: panel.style.height = curFlex + adjustAmount;
         } else {
           panel.style.flexGrow = curFlex + adjustAmount;
         }
@@ -647,7 +648,7 @@ export default class PanelResize {
           adjustAmount = -Math.min(-remainingOffset, maxFlex - curFlex);
         }
         if (panel.type === 'fixed') {
-          panel.style.width = curFlex - adjustAmount;
+          this.isHorizontal ? panel.style.width = curFlex - adjustAmount : panel.style.height = curFlex - adjustAmount;
         } else {
           panel.style.flexGrow = curFlex - adjustAmount;
         }
@@ -700,7 +701,7 @@ export default class PanelResize {
     });
   }
 
-  
+
   setLayout(layouts) {
     Array.isArray(layouts) ? this.sizeData = layouts : undefined;
     this.setPanelFlex();
