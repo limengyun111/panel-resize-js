@@ -374,8 +374,9 @@ export default class PanelResize {
   }
   // 设置面板宽度
   adjustFlexOnResize = () => {
+    this.totalFlex = this.isHorizontal ? this.getTotalWidthFlex(entry?.target) : this.getTotalHeightFlex(entry?.target);
     const panelsFixed = this.fixedPanels.map(it => it.computedSize).reduce((res, ele) => res += ele, 0);
-    const newTotalFlex = this.isHorizontal ? this.getTotalWidthFlex() - panelsFixed : this.getTotalHeightFlex() - panelsFixed;
+    const newTotalFlex = this.totalFlex - panelsFixed;
     this.normalized.forEach((ele, index) => {
       const curGrow = this.panelsFlex[index];
       const nextGrow = curGrow / this.remainingSpace * newTotalFlex;
@@ -397,14 +398,16 @@ export default class PanelResize {
 
   }
 
-  getTotalWidthFlex = () => {
-    const parentStyle = window.getComputedStyle(this.parentEle);
-    const parentContentWidth = this.parentEle.clientWidth - parseFloat(parentStyle.paddingLeft) - parseFloat(parentStyle.paddingRight);
+  getTotalWidthFlex = (ele) => {
+    const parentEle = ele || this.parentEle
+    const parentStyle = window.getComputedStyle(parentEle);
+    const parentContentWidth = parentEle.clientWidth - parseFloat(parentStyle.paddingLeft) - parseFloat(parentStyle.paddingRight);
     return parentContentWidth - this.handlesDimension;
   }
-  getTotalHeightFlex = () => {
-    const parentStyle = window.getComputedStyle(this.parentEle);
-    const parentContentHeight = this.parentEle.clientHeight - parseFloat(parentStyle.paddingTop) - parseFloat(parentStyle.paddingBottom);
+  getTotalHeightFlex = (ele) => {
+    const parentEle = ele || this.parentEle
+    const parentStyle = window.getComputedStyle(parentEle);
+    const parentContentHeight = parentEle.clientHeight - parseFloat(parentStyle.paddingTop) - parseFloat(parentStyle.paddingBottom);
     return parentContentHeight - this.handlesDimension;
   }
 
