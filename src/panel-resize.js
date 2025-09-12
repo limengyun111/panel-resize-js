@@ -373,7 +373,7 @@ export default class PanelResize {
 
   }
   // 设置面板宽度
-  adjustFlexOnResize = () => {
+  adjustFlexOnResize = ([entry]) => {
     this.totalFlex = this.isHorizontal ? this.getTotalWidthFlex(entry?.target) : this.getTotalHeightFlex(entry?.target);
     const panelsFixed = this.fixedPanels.map(it => it.computedSize).reduce((res, ele) => res += ele, 0);
     const newTotalFlex = this.totalFlex - panelsFixed;
