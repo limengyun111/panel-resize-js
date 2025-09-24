@@ -189,7 +189,8 @@ class DragElement {
       if (this.customCursor) {
         this.updateGlobalCursor({ isPointerDown: false })
       } else {
-        document.body.classList.remove("ew-resize");
+        document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize");
+
       }
       this.onMouseUp && this.onMouseUp(event.x, event.y);
       this.dragEle.innerHTML = this.isHorizontal ? this.dragIconMap['hori'] : this.dragIconMap['verit']
@@ -199,7 +200,7 @@ class DragElement {
       this.dragEle.innerHTML = this.isHorizontal ? this.dragIconMap['horiActive'] : this.dragIconMap['veritActive']
 
       const touch = event.touches[0];
-      document.body.classList.remove("ew-resize");
+      document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize");
       this.onMouseUp && this.onMouseUp(touch.clientX, touch.clientY);
     });
 
@@ -347,7 +348,7 @@ export default class PanelResize {
 
     this.flexPanels.map((ele, index) => {
       const { panel } = ele;
-      this.isHorizontal ?  panel.style.width = '':  panel.style.height = '';
+      this.isHorizontal ? panel.style.width = '' : panel.style.height = '';
       panel.style.flex = ''
       panel.style.flexGrow = panelsFlexRatio[index] / flexTotalRatio * this.remainingSpace;
       panel.style.flexBasis = 0;
@@ -461,7 +462,12 @@ export default class PanelResize {
     const panelsFixed = this.fixedPanels.map(it => it.computedSize);
     const savedLayout = localStorage.getItem(`layout-${this.autoSaveId}`);
     if (savedLayout && this.autoSaveId) {
-      const savedLayoutItem = JSON.parse(savedLayout);
+      let savedLayoutItem;
+      try {
+        savedLayoutItem = JSON.parse(savedLayout);
+      } catch (e) {
+        console.log('json error', e);
+      }
 
       let fixed = [];
       let flexd = [];
@@ -633,7 +639,7 @@ export default class PanelResize {
           adjustAmount = Math.max(remainingOffset, minFlex - curFlex);
         }
         if (normalizedPanel.type === 'fixed') {
-         this.isHorizontal ? panel.style.width = curFlex + adjustAmount: panel.style.height = curFlex + adjustAmount;
+          this.isHorizontal ? panel.style.width = curFlex + adjustAmount : panel.style.height = curFlex + adjustAmount;
         } else {
           panel.style.flexGrow = curFlex + adjustAmount;
         }
