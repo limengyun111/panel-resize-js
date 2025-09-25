@@ -17,6 +17,8 @@ class DragElement {
     this.direction = direction;
     this.isHorizontal = direction === 'horizontal';
     this.customCursor = customCursor;
+    this.customCursorVal;
+
     if (this.customCursor) {
       this.updateGlobalCursor({ isPointerDown: false })
     }
@@ -126,6 +128,7 @@ class DragElement {
   updateGlobalCursor(isPointerDown) {
     const val = this.customCursor(isPointerDown);
     document.body.style.cursor = val;
+    this.customCursorVal = val;
   }
 
   // 主要函数，鼠标移动过程中给外部函数传入 最新和上一次的偏移量
@@ -188,10 +191,8 @@ class DragElement {
       this.isBeginMove = false;
       if (this.customCursor) {
         this.updateGlobalCursor({ isPointerDown: false })
-      } else {
-        document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize");
-
       }
+      document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize", this.customCursorVal);
       this.onMouseUp && this.onMouseUp(event.x, event.y);
       this.dragEle.innerHTML = this.isHorizontal ? this.dragIconMap['hori'] : this.dragIconMap['verit']
     });
@@ -200,7 +201,7 @@ class DragElement {
       this.dragEle.innerHTML = this.isHorizontal ? this.dragIconMap['horiActive'] : this.dragIconMap['veritActive']
 
       const touch = event.touches[0];
-      document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize");
+      document.body.classList.remove("ew-resize", "ns-resize", "w-resize", "e-resize", "n-resize", "s-resize", this.customCursorVal);
       this.onMouseUp && this.onMouseUp(touch.clientX, touch.clientY);
     });
 
